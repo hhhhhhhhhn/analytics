@@ -39,6 +39,7 @@ fn endpoint(addr: ClientRealAddr, page: &str, platform: &str) -> (ContentType, &
 fn rocket() -> _ {
     let mut conf = Config::figment().extract::<Config>().unwrap();
     conf.port = env::var("PORT").unwrap().parse().unwrap();
+    println!("Serving in port {}", conf.port);
     rocket::build()
         .configure(conf)
         .mount("/", routes![endpoint])
