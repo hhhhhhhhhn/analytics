@@ -1,8 +1,10 @@
 #[macro_use] extern crate rocket;
 use rocket::http::ContentType;
+use rocket::config::Config;
 use rocket_client_addr::ClientRealAddr;
 use std::io::*;
 use std::fs::OpenOptions;
+use std::env;
 use json;
 
 struct Log {
@@ -35,5 +37,9 @@ fn endpoint(addr: ClientRealAddr, page: &str, platform: &str) -> (ContentType, &
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![endpoint])
+    let mut conf = Config::figment().extract::<Config>().unwrap();
+    conf.port = env::var("PORT").unwrap().parse().unwrap();
+    rocket::build()
+        .configure(conf)
+        .mount("/", routes![endpoint])
 }
