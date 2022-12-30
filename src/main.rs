@@ -35,6 +35,12 @@ fn endpoint(addr: ClientRealAddr, page: &str, platform: &str) -> (ContentType, &
     return (ContentType::SVG, "<svg xmlns=\"http://www.w3.org/2000/svg\"/>")
 }
 
+#[catch(404)]
+fn error() -> &'static str {
+    println!("Error 404");
+    return "Error 404: Not Found"
+}
+
 #[launch]
 fn rocket() -> _ {
     let mut conf = Config::figment().extract::<Config>().unwrap();
@@ -43,4 +49,5 @@ fn rocket() -> _ {
     rocket::build()
         .configure(conf)
         .mount("/", routes![endpoint])
+        .register("/", catchers![error])
 }
