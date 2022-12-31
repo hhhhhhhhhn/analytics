@@ -19,7 +19,7 @@ It will be accesible through port 8000.
 In your website, embed:
 
 ```html
-<img src="http://<SERVER URL>/<PAGE NAME>/unknown/image.svg"
+<img src="http://{SERVER URL}/{PAGE NAME}/unknown/image.svg"
      style="display: fixed; width: 0; height: 0;">
 ```
 
