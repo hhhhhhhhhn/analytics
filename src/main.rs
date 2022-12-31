@@ -3,6 +3,7 @@ use rocket::http::ContentType;
 use rocket_client_addr::ClientRealAddr;
 use std::io::*;
 use std::fs::OpenOptions;
+use std::env;
 use json;
 
 struct Log {
@@ -33,6 +34,23 @@ fn endpoint(addr: ClientRealAddr, page: &str, platform: &str) -> (ContentType, &
     return (ContentType::SVG, "<svg xmlns=\"http://www.w3.org/2000/svg\"/>")
 }
 
+#[post("/logs", data="<key>")]
+fn get_logs(key: String) -> String {
+    if key != env::var("KEY").unwrap_or_else(|_| "PLEASE SET KEY".to_string()) {
+        return "Unauthorized".to_string()
+    }
+
+    let mut file = OpenOptions::new()
+        .read(true)
+        .open("log.txt")
+        .unwrap();
+
+    let mut content = String::new();
+    file.read_to_string(&mut content).ok();
+
+    return content
+}
+
 #[catch(404)]
 fn error() -> &'static str {
     println!("Error 404");
@@ -42,6 +60,6 @@ fn error() -> &'static str {
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![endpoint])
+        .mount("/", routes![endpoint, get_logs])
         .register("/", catchers![error])
 }
