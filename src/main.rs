@@ -1,10 +1,8 @@
 #[macro_use] extern crate rocket;
 use rocket::http::ContentType;
-use rocket::config::Config;
 use rocket_client_addr::ClientRealAddr;
 use std::io::*;
 use std::fs::OpenOptions;
-use std::env;
 use json;
 
 struct Log {
@@ -43,11 +41,7 @@ fn error() -> &'static str {
 
 #[launch]
 fn rocket() -> _ {
-    let mut conf = Config::figment().extract::<Config>().unwrap();
-    conf.port = env::var("PORT").unwrap().parse().unwrap();
-    println!("Serving in port {}", conf.port);
     rocket::build()
-        .configure(conf)
         .mount("/", routes![endpoint])
         .register("/", catchers![error])
 }
