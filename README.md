@@ -44,7 +44,7 @@ it in the end of the article:
 <img src="http://{SERVER URL}/{PAGE NAME}-end/unknown/image.svg"
      srcset="http://{SERVER URL}/{PAGE NAME}-end/desktop/image.svg 1w, http://{SERVER URL}/{PAGE NAME}-end/mobile/image.svg 2w"
      sizes="(orientation: portrait) 2px, 1px"
-     style="width: 1; height: 1; margin: 0"
+     style="width: 1px; height: 1px; margin: 0"
      loading="lazy">
 ```
 
@@ -59,5 +59,5 @@ curl "http://{SERVER URL}/logs" -d "{SECRET KEY}"
 ```
 
 ## Example
-Use the `website/` directory as an example
+Use the `website/` directory as an example of
 running the server locally.
